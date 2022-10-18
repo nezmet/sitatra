@@ -19,7 +19,7 @@
 #
 # sitatra.py
 
-# Import elliotquotes.py, a fork from Tyler Miller's elliotquote repository.
+# Import elliotquotes.py, a fork from Terry Miller's elliotquote repository.
 from elliotquotes import randElliotQuote
 
 # Declare global variables. Might move these to a module since usage.txt already exists.
