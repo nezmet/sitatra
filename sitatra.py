@@ -19,10 +19,13 @@
 #
 # sitatra.py
 #
+
+# Declare global variables. Might move these to a module since usage.txt already exists.
 gUser = ""
 usage_file = open("usage.txt", "r")
 usage_msg = usage_file.read()
 
+# Execute appropriate functions and handle all errors
 def main():
     try:
         print(f'SImple TAsk TRAcker\n')
@@ -30,7 +33,6 @@ def main():
         while gUser == "":
             tUser()
         tLoop()
-
     except FileNotFoundError:
         print('\nNo tasks found for this user.')
         main()
@@ -38,6 +40,7 @@ def main():
         global usage_msg
         print(e, '\n', '\n\n', usage_msg)
 
+# Determine username for list filename
 def tUser():
     msg = "Enter your username: "
     global gUser
@@ -48,6 +51,7 @@ def tUser():
         msg = f'Welcome, {gUser}'
     print(msg)
 
+# TUI event loop
 def tLoop():
     end = False
     task_msg = ["Please select from the following:",
@@ -84,14 +88,15 @@ def tLoop():
             case _:
                 print('Invalid selection, please try again')
                 main()
-    print()
 
+# Add tasks to the user.txt file
 def tAdd():
     global gUser
     f = open(gUser + ".txt", "a")
     f.write(input("Input a new task: ") + "\n")
     f.close()
 
+# List all tasks for the current user.txt
 def tList():
     global gUser
     f = open(gUser + ".txt", "r")
@@ -104,6 +109,7 @@ def tList():
         count += 1
     print()
 
+# Remove tasks from list pulled from user.txt and rewrites user.txt
 def tRemove():
     global gUser
     f = open(gUser + ".txt", "r")
@@ -134,5 +140,6 @@ def tRemove():
     f.writelines(list)
     f.close()
 
+# init main() if not being called as a module
 if __name__ == '__main__':
     main()
