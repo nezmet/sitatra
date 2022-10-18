@@ -69,7 +69,7 @@ def tLoop():
         print(i)
         global usage_msg
     print()
-    while end is not True:
+    while not end:
         match input('sitatra: '):
             case '1':
                 tAdd()
@@ -81,10 +81,7 @@ def tLoop():
                 tUser()
             case '5':
                 end = True
-            case '?':
-                print(usage_msg)
-                main()
-            case 'help':
+            case '?' | 'help':
                 print(usage_msg)
                 main()
             case _:
@@ -120,16 +117,9 @@ def tRemove():
     selRem = int(input('Enter the number for a task to remove: ')) - 1
     check = input(f'Are you sure you want to remove task {selRem + 1}. {list[selRem]}? (Y/n)')
     match check.lower():
-        case "y":
+        case "y" | "yes" | "":
             list.pop(selRem)
-        case "yes":
-            list.pop(selRem)
-        case "":
-            list.pop(selRem)
-        case "n":
-            print('Operation cancelled.')
-            main()
-        case "no":
+        case "n" | "no":
             print('Operation cancelled.')
             main()
         case _:
