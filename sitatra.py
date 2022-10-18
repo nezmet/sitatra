@@ -19,6 +19,9 @@
 #
 # sitatra.py
 
+# Import elliotquotes.py, a fork from Tyler Miller's elliotquote repository.
+from elliotquotes import randElliotQuote
+
 # Declare global variables. Might move these to a module since usage.txt already exists.
 gUser = ""
 usage_file = open("usage.txt", "r")
@@ -26,7 +29,7 @@ usage_msg = usage_file.read()
 
 # Execute appropriate functions and handle all errors
 def main():
-    print(f'SImple TAsk TRAcker\n')
+    print(f'SImple TAsk TRAcker\n\n{randElliotQuote()}\n')
     global gUser
     while gUser == "":
         tUser()
