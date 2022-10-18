@@ -26,20 +26,22 @@ usage_msg = usage_file.read()
 
 # Execute appropriate functions and handle all errors
 def main():
-    try:
-        global gUser
-        while gUser == "":
-            tUser()
-        tLoop()
-    except FileNotFoundError:
-        print('No tasks found for this user.')
-        main()
-    except IndexError:
-        print('Invalid task number')
-        main()
-    except Exception as e:
-        global usage_msg
-        print(e, '\n', '\n\n', usage_msg)
+    print(f'SImple TAsk TRAcker\n')
+    global gUser
+    while gUser == "":
+        tUser()
+    showTUI()
+    done = False
+    while not done:
+        try:
+            done = getInput()
+        except FileNotFoundError:
+            print('No tasks found for this user.')
+        except IndexError:
+            print('Invalid task number')
+        except Exception as e:
+            global usage_msg
+            print(e, '\n', '\n\n', usage_msg)
 
 # Determine username for list filename
 def tUser():
@@ -54,9 +56,8 @@ def tUser():
     print(msg)
 
 # TUI event loop
-def tLoop():
-    end = False
-    task_msg = ["Please select from the following:",
+def showTUI():
+    tui = ["Please select from the following:",
                 "1. Add task",
                 "2. Remove task",
                 "3. List tasks",
@@ -64,29 +65,30 @@ def tLoop():
                 "5. Quit",
                 "",
                 "Type ? or help at any time to display help followed by this prompt"]
-    print()
-    for i in task_msg:
+    for i in tui:
         print(i)
-        global usage_msg
     print()
-    while not end:
-        match input('sitatra: '):
-            case '1':
-                tAdd()
-            case '2':
-                tRemove()
-            case '3':
-                tList()
-            case '4':
-                tUser()
-            case '5':
-                end = True
-            case '?' | 'help':
-                print(usage_msg)
-                main()
-            case _:
-                print('Invalid selection, please try again')
-                main()
+
+def getInput():
+    global usage_msg
+    global gUser
+    check = input(f'sitatra:{gUser}$ ')
+    match check.lower():
+        case '1' | 'a' | 'add':
+            tAdd()
+        case '2' | 'r' | 'rem' | 'remove':
+            tRemove()
+        case '3' | 'l' | 'list':
+            tList()
+        case '4' | 'change' | 'user' | 'change user':
+            tUser()
+        case '5' | 'q' | 'quit':
+            return True
+        case '?' | 'help':
+            print(usage_msg)
+            showTUI()
+        case _:
+            print('Invalid selection, please try again')
 
 # Add tasks to the user.txt file
 def tAdd():
@@ -131,5 +133,4 @@ def tRemove():
 
 # init main() if not being called as a module
 if __name__ == '__main__':
-    print(f'SImple TAsk TRAcker\n')
     main()
