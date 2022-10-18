@@ -18,7 +18,6 @@
 #
 #
 # sitatra.py
-#
 
 # Declare global variables. Might move these to a module since usage.txt already exists.
 gUser = ""
@@ -28,13 +27,15 @@ usage_msg = usage_file.read()
 # Execute appropriate functions and handle all errors
 def main():
     try:
-        print(f'SImple TAsk TRAcker\n')
         global gUser
         while gUser == "":
             tUser()
         tLoop()
     except FileNotFoundError:
-        print('\nNo tasks found for this user.')
+        print('No tasks found for this user.')
+        main()
+    except IndexError:
+        print('Invalid task number')
         main()
     except Exception as e:
         global usage_msg
@@ -116,30 +117,28 @@ def tRemove():
     list = f.readlines()
     f.close()
     selRem = int(input('Enter the number for a task to remove: ')) - 1
-    try:
-        check = input(f'Are you sure you want to remove task {selRem + 1}. {list[selRem]}? (Y/n)')
-        match check.lower():
-            case "y":
-                list.pop(selRem)
-            case "yes":
-                list.pop(selRem)
-            case "":
-                list.pop(selRem)
-            case "n":
-                print('Operation cancelled.')
-                main()
-            case "no":
-                print('Operation cancelled.')
-                main()
-            case _:
-                print('Invalid input')
-                main()
-    except:
-        print('Invalid input')
+    check = input(f'Are you sure you want to remove task {selRem + 1}. {list[selRem]}? (Y/n)')
+    match check.lower():
+        case "y":
+            list.pop(selRem)
+        case "yes":
+            list.pop(selRem)
+        case "":
+            list.pop(selRem)
+        case "n":
+            print('Operation cancelled.')
+            main()
+        case "no":
+            print('Operation cancelled.')
+            main()
+        case _:
+            print('Invalid input')
+            main()
     f = open(gUser + ".txt", "w")
     f.writelines(list)
     f.close()
 
 # init main() if not being called as a module
 if __name__ == '__main__':
+    print(f'SImple TAsk TRAcker\n')
     main()
