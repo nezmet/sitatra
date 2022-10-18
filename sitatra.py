@@ -50,6 +50,7 @@ def tUser():
         msg = "Invalid username\n"
     else:
         msg = f'Welcome, {gUser}'
+        gUser = gUser.lower()
     print(msg)
 
 # TUI event loop
