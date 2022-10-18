@@ -26,12 +26,14 @@ usage_msg = usage_file.read()
 def main():
     try:
         print(f'SImple TAsk TRAcker\n')
-        tUser()
+        global gUser
+        if gUser = "":
+            tUser()
         tLoop()
 
     except FileNotFoundError:
         print('\nNo tasks found for this user.')
-        tLoop()
+        main()
     except Exception as e:
         global usage_msg
         print(e, '\n', '\n\n', usage_msg)
@@ -71,13 +73,13 @@ def tLoop():
                 end = True
             case '?':
                 print(usage_msg)
-                tLoop()
+                main()
             case 'help':
                 print(usage_msg)
-                tLoop()
+                main()
             case _:
                 print('Invalid selection, please try again')
-                tLoop()
+                main()
     print()
 
 def tAdd():
@@ -115,13 +117,13 @@ def tRem():
                 list.pop(selRem)
             case "n":
                 print('Operation cancelled.')
-                tLoop()
+                main()
             case "no":
                 print('Operation cancelled.')
-                tLoop()
+                main()
             case _:
                 print('Invalid input')
-                tLoop()
+                main()
     except:
         print('Invalid input')
     f = open(gUser + ".txt", "w")
