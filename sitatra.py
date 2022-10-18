@@ -27,7 +27,7 @@ def main():
     try:
         print(f'SImple TAsk TRAcker\n')
         global gUser
-        if gUser = "":
+        if gUser == "":
             tUser()
         tLoop()
 
@@ -64,9 +64,9 @@ def tLoop():
             case '1':
                 tAdd()
             case '2':
-                tRem()
+                tRemove()
             case '3':
-                tLi()
+                tList()
             case '4':
                 tUser()
             case '5':
@@ -88,7 +88,7 @@ def tAdd():
     f.write(input("Input a new task: ") + "\n")
     f.close()
 
-def tLi():
+def tList():
     global gUser
     f = open(gUser + ".txt", "r")
     list = f.readlines()
@@ -100,7 +100,7 @@ def tLi():
         count += 1
     print()
 
-def tRem():
+def tRemove():
     global gUser
     f = open(gUser + ".txt", "r")
     list = f.readlines()
