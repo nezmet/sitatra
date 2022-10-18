@@ -122,10 +122,8 @@ def tRemove():
             list.pop(selRem)
         case "n" | "no":
             print('Operation cancelled.')
-            main()
         case _:
             print('Invalid input')
-            main()
     with open(gUser + ".txt", "w") as file:
         file.writelines(list)
 
