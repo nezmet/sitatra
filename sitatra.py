@@ -47,13 +47,14 @@ def main():
 def tUser():
     msg = "Enter your username: "
     global gUser
-    gUser = input(msg)
-    if gUser == "":
-        msg = "Invalid username\n"
-    else:
-        msg = f'Welcome, {gUser}'
-        gUser = gUser.lower()
-    print(msg)
+    while gUser == "":
+        gUser = input(msg)
+        if gUser == "":
+            msg = "Invalid username\n"
+        else:
+            msg = f'Welcome, {gUser}'
+            gUser = gUser.lower()
+        print(msg)
 
 # TUI event loop
 def showTUI():
@@ -81,6 +82,7 @@ def getInput():
         case '3' | 'l' | 'list':
             tList()
         case '4' | 'change' | 'user' | 'change user':
+            gUser = ""
             tUser()
         case '5' | 'q' | 'quit':
             return True
@@ -93,16 +95,14 @@ def getInput():
 # Add tasks to the user.txt file
 def tAdd():
     global gUser
-    f = open(gUser + ".txt", "a")
-    f.write(input("Input a new task: ") + "\n")
-    f.close()
+    with open(gUser + ".txt", "a") as file:
+        file.write(input("Input a new task: ") + "\n")
 
 # List all tasks for the current user.txt
 def tList():
     global gUser
-    f = open(gUser + ".txt", "r")
-    list = f.readlines()
-    f.close()
+    with open(gUser + ".txt", "r") as file:
+        list = file.readlines()
     count = 1
     print('All tasks:\n')
     for i in list:
@@ -113,9 +113,8 @@ def tList():
 # Remove tasks from list pulled from user.txt and rewrites user.txt
 def tRemove():
     global gUser
-    f = open(gUser + ".txt", "r")
-    list = f.readlines()
-    f.close()
+    with open(gUser + ".txt", "r") as file:
+        list = file.readlines()
     selRem = int(input('Enter the number for a task to remove: ')) - 1
     check = input(f'Are you sure you want to remove task {selRem + 1}? [Y/n]')
     match check.lower():
@@ -127,9 +126,8 @@ def tRemove():
         case _:
             print('Invalid input')
             main()
-    f = open(gUser + ".txt", "w")
-    f.writelines(list)
-    f.close()
+    with open(gUser + ".txt", "w") as file:
+        file.writelines(list)
 
 # init main() if not being called as a module
 if __name__ == '__main__':
