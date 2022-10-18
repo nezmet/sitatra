@@ -27,7 +27,7 @@ def main():
     try:
         print(f'SImple TAsk TRAcker\n')
         global gUser
-        if gUser == "":
+        while gUser == "":
             tUser()
         tLoop()
 
@@ -42,7 +42,11 @@ def tUser():
     msg = "Enter your username: "
     global gUser
     gUser = input(msg)
-    print(f'\nWelcome, {gUser}.')
+    if gUser == "":
+        msg = "Invalid username\n"
+    else:
+        msg = f'Welcome, {gUser}'
+    print(msg)
 
 def tLoop():
     end = False
