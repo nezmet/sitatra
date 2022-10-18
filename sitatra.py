@@ -115,7 +115,7 @@ def tRemove():
     list = f.readlines()
     f.close()
     selRem = int(input('Enter the number for a task to remove: ')) - 1
-    check = input(f'Are you sure you want to remove task {selRem + 1}. {list[selRem]}? (Y/n)')
+    check = input(f'Are you sure you want to remove task {selRem + 1}? [Y/n]')
     match check.lower():
         case "y" | "yes" | "":
             list.pop(selRem)
