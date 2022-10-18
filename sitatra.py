@@ -76,7 +76,7 @@ def getInput():
     match check.lower():
         case '1' | 'a' | 'add':
             tAdd()
-        case '2' | 'r' | 'rem' | 'remove':
+        case '2' | 'r' | 'rm' | 'remove':
             tRemove()
         case '3' | 'l' | 'list':
             tList()
