@@ -19,13 +19,12 @@
 #
 # sitatra.py
 
-# Import elliotquotes.py, a fork from Terry Miller's elliotquote repository.
+# Import elliotquotes.py, a fork from Terryt git  Miller's elliotquote repository.
 from elliotquotes import randElliotQuote
+from usage import usage_msg
 
 # Declare global variables. Might move these to a module since usage.txt already exists.
 gUser = ""
-usage_file = open("usage.txt", "r")
-usage_msg = usage_file.read()
 
 # Execute appropriate functions and handle all errors
 def main():
@@ -53,7 +52,7 @@ def tUser():
     while gUser == "":
         gUser = input(msg)
         if gUser == "":
-            msg = "Invalid username\n"
+            msg = "Invalid username"
         else:
             msg = f'Welcome, {gUser}'
             gUser = gUser.lower()
@@ -68,10 +67,9 @@ def showTUI():
                 "4. Change user",
                 "5. Quit",
                 "",
-                "Type ? or help at any time to display help followed by this prompt"]
+                "Type ? or help to display help"]
     for i in tui:
         print(i)
-    print()
 
 def getInput():
     global usage_msg
