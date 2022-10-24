@@ -43,7 +43,7 @@ def main():
             global gUser
             printTUI()
             if gUser == "":
-                tUser()
+                getUser()
             else: 
                 done = getInput()
         except FileNotFoundError:
@@ -65,13 +65,14 @@ Current List: {getList()}
 
 Options:
 1. Add
-2. Complete
-3. Change User
-4. Quit
+2. Toggle Complete
+3. Remove
+4. Change User
+5. Quit
 
 Type ? or help to display help''', title=f'[green]si[blue]ta[red]tra', subtitle=f'{randElliotQuote()}'))
 
-def tUser():
+def getUser():
     msg = "Enter your username: "
     global gUser
     while gUser == "":
@@ -89,26 +90,22 @@ def getInput():
     check = input(f'Enter an option: ')
     match check.lower():
         case '1' | 'a' | 'add':
-            tAdd()
-        case '2' | 'r' | 'rm' | 'remove':
-            tRemove()
-        case '3' | 'change' | 'user' | 'change user':
+            doAdd()
+        case '2' | 't' | 'toggle':
+            toggleTask()
+        case '3' | 'r' | 'rm' | 'remove':
+            doRemove()
+        case '4' | 'change' | 'user' | 'change user':
             gUser = ""
-            tUser()
-        case '4' | 'q' | 'quit':
+            getUser()
+        case '5' | 'q' | 'quit':
             return True
         case '?' | 'help':
             clearScreen()
             print(Panel(usage_msg))
             input('Press any key to continue...')
-            showTUI()
         case _:
             print('Invalid selection, please try again')
-
-def tAdd():
-    global gUser
-    with open(gUser + ".txt", "a") as file:
-        file.write(input("Input a new task: ") + ";0\n")
 
 def getList():
     global gUser
@@ -119,40 +116,75 @@ def getList():
         currentList += "\n"
         with open(gUser + ".txt", "r") as file:
             list = file.readlines()
-            count = 1
-            for i in list:
-                try:
-                    tmp = i.split(';')
-                    match tmp[1]:
-                        case "0":
-                            tmp = tmp[0] + "\n"
-                        case "1":
-                            tmp = f'[s]{tmp[0]}[/s]\n'
-                        case _:
-                            tmp = tmp[0] + "\n" 
-                except:
-                    tmp = i
+        count = 1
+        for i in list:
+            try:
+                tmp = list[count - 1].split(';')
+                match tmp[1]:
+                    case "0\n":
+                        tmp = tmp[0] + "\n"
+                    case "1\n":
+                        tmp = f'[s]{tmp[0]}[/s]\n'
+                    case _:
+                        tmp = tmp[0] + "\n" 
+            except:
+                tmp = i
 
-                currentList += (str(count) + ". " + tmp)
-                count += 1
+            currentList += (str(count) + ". " + tmp)
+            count += 1
 
     return currentList
 
-def tRemove():
+def toggleTask():
     global gUser
     with open(gUser + ".txt", "r") as file:
         list = file.readlines()
+    toToggle = int(input('Enter a task to toggle: ')) - 1
+    
+    if list[toToggle].split(';')[1] == "0\n":
+        taskComplete(list, toToggle)
+    elif list[toToggle].split(';')[1] == "1\n":
+        taskIncomplete(list, toToggle)
+
+def taskComplete(list, task):
+    tmp = list[task].split(';')
+    list[task] = tmp[0] + ";1\n"
+    writeTask(list)
+
+def taskIncomplete(taskList, task):
+    tmp = taskList[task].split(';')
+    taskList[task] = tmp[0] + ";0\n"
+    writeTask(taskList)
+
+def readList():
+    global gUser
+    with open(gUser + ".txt", 'r') as file:
+        taskList = file.readlines()
+    return taskList
+
+def writeTask(list):
+    global gUser
+    with open(gUser + ".txt", "w") as file:
+        file.writelines(list)
+
+def doAdd():
+    global gUser
+    with open(gUser + ".txt", "a") as file:
+        file.write(input("Input a new task: ") + ";0\n")
+
+def doRemove():
+    global gUser
+    taskList = readList()
     selRem = int(input('Enter the number for a task to remove: ')) - 1
     check = input(f'Are you sure you want to remove task {selRem + 1}? [Y/n]')
     match check.lower():
         case "y" | "yes" | "":
-            list.pop(selRem)
+            taskList.pop(selRem)
         case "n" | "no":
             print('Operation cancelled.')
         case _:
             print('Invalid input')
-    with open(gUser + ".txt", "w") as file:
-        file.writelines(list)
+    writeTask(taskList)
 
 def clearScreen():
     if os.name == 'posix':
