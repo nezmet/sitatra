@@ -69,7 +69,7 @@ Options:
 3. Change User
 4. Quit
 
-Type ? or help to display help''', title=f'sitatra', subtitle=f'{randElliotQuote()}'))
+Type ? or help to display help''', title=f'[green]si[blue]ta[red]tra', subtitle=f'{randElliotQuote()}'))
 
 def tUser():
     msg = "Enter your username: "
@@ -98,7 +98,9 @@ def getInput():
         case '4' | 'q' | 'quit':
             return True
         case '?' | 'help':
-            print(usage_msg)
+            clearScreen()
+            print(Panel(usage_msg))
+            input('Press any key to continue...')
             showTUI()
         case _:
             print('Invalid selection, please try again')
