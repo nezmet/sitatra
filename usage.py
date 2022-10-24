@@ -1,4 +1,3 @@
-gUser = ""
 usage_msg = """sitatra usage:
 
 Users:      sitatra does not save any user information, only the tasks given to it. 
@@ -22,16 +21,3 @@ You can find the lists of tasks as txt documents in the file that sitatra is in,
 you can create, edit, and copy any of your lists as you desire. Just ensure any
 created lists are all lowercase and you will be able to use that list by using 
 that name as a username.\n"""
-
-tui = f'''Current User: {gUser}
-
-Current List:
-
-Options:
-1. Add
-2. Complete
-3. List
-4. Change User
-5. Quit
-
-Type ? of help to display help'''

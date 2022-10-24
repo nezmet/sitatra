@@ -1,54 +1,55 @@
-# (SI)mple (TA)sk (TRA)cker
+# (si)mple (ta)sk (tra)cker
 #
-# Python 7.1 Project - TODO List
+# python 7.1 project - todo list
 # 
-# Need statement:
-# - TUI to use REPL
-# - Add tasks, Delete tasks, List tasks in the order they were inserted
-# - Persist across runs
-# - Multiple users with unique lists
-# - Store data on disk somewhere, human readable
-# - No memorization of commands, user friendly prompt interface
+# need statement:
+# - tui to use repl
+# - add tasks, delete tasks, list tasks in the order they were inserted
+# - persist across runs
+# - multiple users with unique lists
+# - store data on disk somewhere, human readable
+# - no memorization of commands, user friendly prompt interface
 #
-# New Goals:
-# - Printing list is default behavior
-# - No more than 15 items printed at once.
-# - Save completed tasks
-# - Show completed tasks with visible delimiting
-# - Completed tasks at top of list should be deleted
+# new goals:
+# - printing list is default behavior
+# - no more than 15 items printed at once.
+# - save completed tasks
+# - show completed tasks with visible delimiting
+# - completed tasks at top of list should be deleted
 #
-# Stretch Goals:
-# - Integrate gpg somehow
-# - Add options to export as csv and other filetypes
-# - Store timestamps with the tasks and make them show up optionally
-# - Add a config file
+# stretch goals:
+# - integrate gpg somehow
+# - add options to export as csv and other filetypes
+# - store timestamps with the tasks and make them show up optionally
+# - add a config file
 #
 #
 # sitatra.py
 
-# Import elliotquotes.py, a fork from Terryt git  Miller's elliotquote repository.
+# import elliotquotes.py, a fork from terryt git  miller's elliotquote repository.
 import os
 from rich import print
 from rich.panel import Panel
 from elliotquotes import randElliotQuote
-from usage import tui
 from usage import usage_msg
 
-# Declare global variables. Might move these to a module since usage.py already exists.
+# ugly variables going here:
 gUser = ""
 
-# Execute appropriate functions and handle all errors
 def main():
-    # TUI Loop
-    while gUser == "":
-        tUser()
     done = False
     while not done:
         try:
+            global gUser
             printTUI()
-            done = getInput()
+            if gUser == "":
+                tUser()
+            else: 
+                done = getInput()
         except FileNotFoundError:
             print('No tasks found for this user.')
+            with open(gUser + ".txt", "w"):
+                pass
         except IndexError:
             print('Invalid task number')
         except Exception as e:
@@ -58,10 +59,18 @@ def main():
 def printTUI():
     clearScreen()
     global gUser
-    global tui
-    print(Panel(tui, title=f'sitatra', subtitle=f'{randElliotQuote()}'))
+    print(Panel(f'''Current User: {gUser}
 
-# Determine username for list filename
+Current List: {getList()}
+
+Options:
+1. Add
+2. Complete
+3. Change User
+4. Quit
+
+Type ? or help to display help''', title=f'sitatra', subtitle=f'{randElliotQuote()}'))
+
 def tUser():
     msg = "Enter your username: "
     global gUser
@@ -83,12 +92,10 @@ def getInput():
             tAdd()
         case '2' | 'r' | 'rm' | 'remove':
             tRemove()
-        case '3' | 'l' | 'list':
-            tList()
-        case '4' | 'change' | 'user' | 'change user':
+        case '3' | 'change' | 'user' | 'change user':
             gUser = ""
             tUser()
-        case '5' | 'q' | 'quit':
+        case '4' | 'q' | 'quit':
             return True
         case '?' | 'help':
             print(usage_msg)
@@ -96,25 +103,27 @@ def getInput():
         case _:
             print('Invalid selection, please try again')
 
-# Add tasks to the user.txt file
 def tAdd():
     global gUser
     with open(gUser + ".txt", "a") as file:
         file.write(input("Input a new task: ") + "\n")
 
-# List all tasks for the current user.txt
-def tList():
+def getList():
     global gUser
-    with open(gUser + ".txt", "r") as file:
-        list = file.readlines()
-    count = 1
-    print('All tasks:\n')
-    for i in list:
-        print(str(count) + ". " + i, end="")
-        count += 1
-    print()
+    currentList = ""
+    if gUser == "":
+        pass
+    else:
+        currentList += "\n"
+        with open(gUser + ".txt", "r") as file:
+            list = file.readlines()
+            count = 1
+            for i in list:
+                currentList += (str(count) + ". " + i)
+                count += 1
 
-# Remove tasks from list pulled from user.txt and rewrites user.txt
+    return currentList
+
 def tRemove():
     global gUser
     with open(gUser + ".txt", "r") as file:
@@ -139,6 +148,5 @@ def clearScreen():
 
     os.system(clearCommand)
 
-# init main() if not being called as a module
 if __name__ == '__main__':
     main()
