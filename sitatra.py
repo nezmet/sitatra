@@ -137,19 +137,18 @@ def getList():
 
 def toggleTask():
     global gUser
-    with open(gUser + ".txt", "r") as file:
-        list = file.readlines()
+    taskList = readList()
     toToggle = int(input('Enter a task to toggle: ')) - 1
     
-    if list[toToggle].split(';')[1] == "0\n":
-        taskComplete(list, toToggle)
-    elif list[toToggle].split(';')[1] == "1\n":
-        taskIncomplete(list, toToggle)
+    if taskList[toToggle].split(';')[1] == "0\n":
+        taskComplete(taskList, toToggle)
+    elif taskList[toToggle].split(';')[1] == "1\n":
+        taskIncomplete(taskList, toToggle)
 
-def taskComplete(list, task):
-    tmp = list[task].split(';')
-    list[task] = tmp[0] + ";1\n"
-    writeTask(list)
+def taskComplete(taskList, task):
+    tmp = taskList[task].split(';')
+    taskList[task] = tmp[0] + ";1\n"
+    writeTask(taskList)
 
 def taskIncomplete(taskList, task):
     tmp = taskList[task].split(';')
