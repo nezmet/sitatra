@@ -31,6 +31,7 @@ import os
 from rich import print
 from rich.panel import Panel
 from elliotquotes import randElliotQuote
+from usage import tui
 from usage import usage_msg
 
 # Declare global variables. Might move these to a module since usage.py already exists.
@@ -41,11 +42,10 @@ def main():
     # TUI Loop
     while gUser == "":
         tUser()
-    printTUI()
-    showTUI()
     done = False
     while not done:
         try:
+            printTUI()
             done = getInput()
         except FileNotFoundError:
             print('No tasks found for this user.')
@@ -58,11 +58,8 @@ def main():
 def printTUI():
     clearScreen()
     global gUser
-    print(Panel(f'''Current User: {gUser}\n\n
-                    Current List:\n\n
-                    Options:''', 
-                    title=f'sitatra', 
-                    subtitle=f'{randElliotQuote()}'))
+    global tui
+    print(Panel(tui, title=f'sitatra', subtitle=f'{randElliotQuote()}'))
 
 # Determine username for list filename
 def tUser():
@@ -77,23 +74,10 @@ def tUser():
             gUser = gUser.lower()
         print(msg)
 
-# TUI event loop
-def showTUI():
-    tui = ["Please select from the following:",
-                "1. Add task",
-                "2. Remove task",
-                "3. List tasks",
-                "4. Change user",
-                "5. Quit",
-                "",
-                "Type ? or help to display help"]
-    for i in tui:
-        print(i)
-
 def getInput():
     global usage_msg
     global gUser
-    check = input(f'sitatra:{gUser}$ ')
+    check = input(f'Enter an option: ')
     match check.lower():
         case '1' | 'a' | 'add':
             tAdd()
