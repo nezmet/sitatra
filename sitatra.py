@@ -108,7 +108,7 @@ def getInput():
 def tAdd():
     global gUser
     with open(gUser + ".txt", "a") as file:
-        file.write(input("Input a new task: ") + "\n")
+        file.write(input("Input a new task: ") + ";0\n")
 
 def getList():
     global gUser
@@ -121,7 +121,19 @@ def getList():
             list = file.readlines()
             count = 1
             for i in list:
-                currentList += (str(count) + ". " + i)
+                try:
+                    tmp = i.split(';')
+                    match tmp[1]:
+                        case "0":
+                            tmp = tmp[0] + "\n"
+                        case "1":
+                            tmp = f'[s]{tmp[0]}[/s]\n'
+                        case _:
+                            tmp = tmp[0] + "\n" 
+                except:
+                    tmp = i
+
+                currentList += (str(count) + ". " + tmp)
                 count += 1
 
     return currentList
