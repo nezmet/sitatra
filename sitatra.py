@@ -28,7 +28,6 @@
 
 # Import elliotquotes.py, a fork from Terryt git  Miller's elliotquote repository.
 import os
-from pynput.keyboard import Key, Controller
 from rich import print
 from rich.panel import Panel
 from elliotquotes import randElliotQuote
@@ -39,13 +38,10 @@ gUser = ""
 
 # Execute appropriate functions and handle all errors
 def main():
-    # Intro
-    print(f'SImple TAsk TRAcker\n\n{randElliotQuote()}\n')
-    global gUser
-
     # TUI Loop
     while gUser == "":
         tUser()
+    printTUI()
     showTUI()
     done = False
     while not done:
@@ -58,6 +54,15 @@ def main():
         except Exception as e:
             global usage_msg
             print(e, '\n', '\n\n', usage_msg)
+
+def printTUI():
+    clearScreen()
+    global gUser
+    print(Panel(f'''Current User: {gUser}\n\n
+                    Current List:\n\n
+                    Options:''', 
+                    title=f'sitatra', 
+                    subtitle=f'{randElliotQuote()}'))
 
 # Determine username for list filename
 def tUser():
@@ -141,6 +146,14 @@ def tRemove():
             print('Invalid input')
     with open(gUser + ".txt", "w") as file:
         file.writelines(list)
+
+def clearScreen():
+    if os.name == 'posix':
+        clearCommand = "clear"
+    else:
+        clearCommand = "cls"
+
+    os.system(clearCommand)
 
 # init main() if not being called as a module
 if __name__ == '__main__':
