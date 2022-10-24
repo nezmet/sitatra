@@ -9,7 +9,14 @@
 # - Multiple users with unique lists
 # - Store data on disk somewhere, human readable
 # - No memorization of commands, user friendly prompt interface
-# 
+#
+# New Goals:
+# - Printing list is default behavior
+# - No more than 15 items printed at once.
+# - Save completed tasks
+# - Show completed tasks with visible delimiting
+# - Completed tasks at top of list should be deleted
+#
 # Stretch Goals:
 # - Integrate gpg somehow
 # - Add options to export as csv and other filetypes
