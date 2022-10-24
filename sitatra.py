@@ -27,16 +27,23 @@
 # sitatra.py
 
 # Import elliotquotes.py, a fork from Terryt git  Miller's elliotquote repository.
+import os
+from pynput.keyboard import Key, Controller
+from rich import print
+from rich.panel import Panel
 from elliotquotes import randElliotQuote
 from usage import usage_msg
 
-# Declare global variables. Might move these to a module since usage.txt already exists.
+# Declare global variables. Might move these to a module since usage.py already exists.
 gUser = ""
 
 # Execute appropriate functions and handle all errors
 def main():
+    # Intro
     print(f'SImple TAsk TRAcker\n\n{randElliotQuote()}\n')
     global gUser
+
+    # TUI Loop
     while gUser == "":
         tUser()
     showTUI()
