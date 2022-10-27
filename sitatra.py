@@ -62,7 +62,6 @@ def printTUI():
     print(Panel(f'''Current User: {gUser}
 
 Current List: {getList()}
-
 Options:
 1. Add
 2. Toggle Complete
@@ -109,11 +108,8 @@ def getInput():
 
 def getList():
     global gUser
-    currentList = ""
-    if gUser == "":
-        pass
-    else:
-        currentList += "\n"
+    currentList = "\n"
+    if gUser != "":
         with open(gUser + ".txt", "r") as file:
             list = file.readlines()
         count = 1
@@ -181,6 +177,7 @@ def doRemove():
             taskList.pop(selRem)
         case "n" | "no":
             print('Operation cancelled.')
+            input('Press any key to continue...')
         case _:
             print('Invalid input')
     writeTask(taskList)
