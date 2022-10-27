@@ -111,6 +111,7 @@ def getList():
     if gUser != "":
         with open(gUser + ".txt", "r") as file:
             list = file.readlines()
+
         count = 1
         for i in list:
             try:
@@ -154,6 +155,7 @@ def readList():
     global gUser
     with open(gUser + ".txt", 'r') as file:
         taskList = file.readlines()
+
     return taskList
 
 def writeTask(taskList):
@@ -171,6 +173,7 @@ def doRemove():
     taskList = readList()
     selRem = int(input('Enter the number for a task to remove: ')) - 1
     check = input(f'Are you sure you want to remove task {selRem + 1}? [Y/n]')
+
     match check.lower():
         case "y" | "yes" | "":
             taskList.pop(selRem)
@@ -178,7 +181,9 @@ def doRemove():
             print('Operation cancelled.')
             input('Press any key to continue...')
         case _:
-            print('Invalid input')
+            print('Invalid input. Operation Cancelled.')
+            input('Press any key to continue...')
+
     writeTask(taskList)
 
 def clearScreen():
