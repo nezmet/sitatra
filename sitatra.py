@@ -156,10 +156,10 @@ def readList():
         taskList = file.readlines()
     return taskList
 
-def writeTask(list):
+def writeTask(taskList):
     global gUser
     with open(gUser + ".txt", "w") as file:
-        file.writelines(list)
+        file.writelines(taskList)
 
 def doAdd():
     global gUser
