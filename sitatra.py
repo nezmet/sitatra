@@ -72,10 +72,9 @@ Options:
 Type ? or help to display help''', title=f'[green]si[blue]ta[red]tra', subtitle=f'{randElliotQuote()}'))
 
 def getUser():
-    msg = "Enter your username: "
     global gUser
     while gUser == "":
-        gUser = input(msg)
+        gUser = input('Enter your username: ')
         if gUser == "":
             msg = "Invalid username"
         else:
