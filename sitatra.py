@@ -1,7 +1,7 @@
 # (si)mple (ta)sk (tra)cker
 #
 # python 7.1 project - todo list
-# 
+#
 # need statement:
 # - tui to use repl
 # - add tasks, delete tasks, list tasks in the order they were inserted
@@ -41,10 +41,11 @@ def main():
     while not done:
         try:
             global gUser
+            delFirstComplete()
             printTUI()
             if gUser == "":
                 getUser()
-            else: 
+            else:
                 done = getInput()
         except FileNotFoundError:
             print('No tasks found for this user.')
@@ -113,7 +114,6 @@ def getList():
     currentList = "\n"
     if gUser != "":
         taskList = readList()
-
         count = 1
         for i in taskList:
             try:
@@ -124,7 +124,7 @@ def getList():
                     case "1\n":
                         tmp = f'[s]{tmp[0]}[/s]\n'
                     case _:
-                        tmp = tmp[0] + "\n" 
+                        tmp = tmp[0] + "\n"
             except:
                 tmp = i
 
@@ -133,11 +133,18 @@ def getList():
 
     return currentList
 
+def delFirstComplete():
+    taskList = readList()
+    if len(taskList) > 0:
+        while taskList[0].split(';')[1] == '1\n':
+            doRemove(0)
+            taskList = readList()
+
 def toggleTask():
     global gUser
     taskList = readList()
     toToggle = int(input('Enter a task to toggle: ')) - 1
-    
+
     if taskList[toToggle].split(';')[1] == "0\n":
         taskComplete(taskList, toToggle)
     elif taskList[toToggle].split(';')[1] == "1\n":
