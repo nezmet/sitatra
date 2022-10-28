@@ -63,15 +63,15 @@ def printTUI():
 
 Current List: {getList()}
 Options:
-1. [blue]A[/blue]dd
-2. [blue]T[/blue]oggle Complete
-3. [blue]R[/blue]emove
-4. [blue]C[/blue]hange User
-5. [blue]N[/blue]ext page
-6. [blue]P[/blue]revious page
-7. [blue]Q[/blue]uit
+1. [bright_blue]A[/bright_blue]dd
+2. [bright_blue]T[/bright_blue]oggle Complete
+3. [bright_blue]R[/bright_blue]emove
+4. [bright_blue]C[/bright_blue]hange User
+5. [bright_blue]N[/bright_blue]ext page
+6. [bright_blue]P[/bright_blue]revious page
+7. [bright_blue]Q[/bright_blue]uit
 
-Type [blue]?[/blue] or [blue]help[/blue] to display help''', title=f'[green]si[blue]ta[red]tra', subtitle=f'{randElliotQuote()}'))
+Type [bright_blue]?[/bright_blue] or [bright_blue]help[/bright_blue] to display help''', title=f'[green]si[blue]ta[red]tra', subtitle=f'{randElliotQuote()}'))
 
 def getUser():
     global gUser
@@ -91,7 +91,7 @@ def getInput():
         case '2' | 't' | 'toggle':
             toggleTask()
         case '3' | 'r' | 'rm' | 'remove':
-            doRemove()
+            promptRemove()
         case '4' | 'change' | 'user' | 'c':
             global gUser
             gUser = ""
@@ -156,31 +156,26 @@ def taskIncomplete(taskList, task):
     writeTask(taskList)
 
 def readList():
-    global gUser
     with open(gUser + ".txt", 'r') as file:
         taskList = file.readlines()
 
     return taskList
 
 def writeTask(taskList):
-    global gUser
     with open(gUser + ".txt", "w") as file:
         file.writelines(taskList)
 
 def doAdd():
-    global gUser
     with open(gUser + ".txt", "a") as file:
         file.write(input("Input a new task: ") + ";0\n")
 
-def doRemove():
-    global gUser
-    taskList = readList()
+def promptRemove():
     selRem = int(input('Enter the number for a task to remove: ')) - 1
     check = input(f'Are you sure you want to remove task {selRem + 1}? [Y/n]')
 
     match check.lower():
         case "y" | "yes" | "":
-            taskList.pop(selRem)
+            doRemove(selRem)
         case "n" | "no":
             print('Operation cancelled.')
             input('Press any key to continue...')
@@ -188,6 +183,9 @@ def doRemove():
             print('Invalid input. Operation Cancelled.')
             input('Press any key to continue...')
 
+def doRemove(toRemove):
+    taskList = readList()
+    taskList.pop(toRemove)
     writeTask(taskList)
 
 def clearScreen():
