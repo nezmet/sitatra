@@ -26,15 +26,15 @@
 #
 # sitatra.py
 
-# import elliotquotes.py, a fork from terryt git  miller's elliotquote repository.
 import os
 from rich import print
 from rich.panel import Panel
 from elliotquotes import randElliotQuote
 from usage import usage_msg
 
-# ugly variables going here:
 gUser = ""
+currentPage = 0
+taskPerPage = 10
 
 def main():
     done = False
@@ -63,29 +63,28 @@ def printTUI():
 
 Current List: {getList()}
 Options:
-1. Add
-2. Toggle Complete
-3. Remove
-4. Change User
-5. Quit
+1. [blue]A[/blue]dd
+2. [blue]T[/blue]oggle Complete
+3. [blue]R[/blue]emove
+4. [blue]C[/blue]hange User
+5. [blue]N[/blue]ext page
+6. [blue]P[/blue]revious page
+7. [blue]Q[/blue]uit
 
-Type ? or help to display help''', title=f'[green]si[blue]ta[red]tra', subtitle=f'{randElliotQuote()}'))
+Type [blue]?[/blue] or [blue]help[/blue] to display help''', title=f'[green]si[blue]ta[red]tra', subtitle=f'{randElliotQuote()}'))
 
 def getUser():
     global gUser
     while gUser == "":
-        gUser = input('Enter your username: ')
+        gUser = input('\nEnter your username: ')
         if gUser == "":
-            msg = "Invalid username"
+            print("Invalid username")
         else:
-            msg = f'Welcome, {gUser}'
             gUser = gUser.lower()
-        print(msg)
 
 def getInput():
     global usage_msg
-    global gUser
-    check = input(f'Enter an option: ')
+    check = input(f'\nEnter an option: ')
     match check.lower():
         case '1' | 'a' | 'add':
             doAdd()
@@ -93,10 +92,15 @@ def getInput():
             toggleTask()
         case '3' | 'r' | 'rm' | 'remove':
             doRemove()
-        case '4' | 'change' | 'user' | 'change user':
+        case '4' | 'change' | 'user' | 'c':
+            global gUser
             gUser = ""
             getUser()
-        case '5' | 'q' | 'quit':
+        case '5' | 'n' | 'next':
+            pass
+        case '6' | 'p' | 'previous':
+            pass
+        case '7' | 'q' | 'quit':
             return True
         case '?' | 'help':
             clearScreen()
