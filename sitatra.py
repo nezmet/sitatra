@@ -110,16 +110,14 @@ def getInput():
             print('Invalid selection, please try again')
 
 def getList():
-    global gUser
     currentList = "\n"
     if gUser != "":
-        with open(gUser + ".txt", "r") as file:
-            list = file.readlines()
+        taskList = readList()
 
         count = 1
-        for i in list:
+        for i in taskList:
             try:
-                tmp = list[count - 1].split(';')
+                tmp = taskList[count - 1].split(';')
                 match tmp[1]:
                     case "0\n":
                         tmp = tmp[0] + "\n"
