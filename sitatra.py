@@ -98,9 +98,9 @@ def getInput():
             gUser = ""
             getUser()
         case '5' | 'n' | 'next':
-            pass
+            turnPage('n')
         case '6' | 'p' | 'previous':
-            pass
+            turnPage('p')
         case '7' | 'q' | 'quit':
             return True
         case '?' | 'help':
@@ -112,12 +112,19 @@ def getInput():
 
 def getList():
     currentList = "\n"
+    global currentPage
+    global taskPerPage
     if gUser != "":
         taskList = readList()
-        count = 1
-        for i in taskList:
+        firstTask = currentPage * taskPerPage
+
+        if (currentPage + 1) * taskPerPage < len(taskList):
+            lastTask = (currentPage + 1) * taskPerPage
+        else:
+            lastTask = len(taskList) - 1
+        for i in range(firstTask, lastTask):
             try:
-                tmp = taskList[count - 1].split(';')
+                tmp = taskList[i].split(';')
                 match tmp[1]:
                     case "0\n":
                         tmp = tmp[0] + "\n"
@@ -126,10 +133,9 @@ def getList():
                     case _:
                         tmp = tmp[0] + "\n"
             except:
-                tmp = i
+                tmp = taskList[i]
 
-            currentList += (str(count) + ". " + tmp)
-            count += 1
+            currentList += (str(i + 1) + ". " + tmp)
 
     return currentList
 
@@ -139,6 +145,21 @@ def delFirstComplete():
         while taskList[0].split(';')[1] == '1\n':
             doRemove(0)
             taskList = readList()
+
+def turnPage(direction):
+    global currentPage
+    taskList = readList()
+
+    firstTask = (currentPage * taskPerPage) + taskPerPage
+
+    if firstTask > len(taskList):
+        currentPage = 0
+    else:
+        match direction:
+            case "n":
+                currentPage += 1
+            case "p":
+                currentPage -= 1
 
 def toggleTask():
     global gUser
