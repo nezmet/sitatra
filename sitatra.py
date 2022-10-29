@@ -38,21 +38,29 @@ taskPerPage = 10
 
 def main():
     done = False
+
     while not done:
+
         try:
             global gUser
             delFirstComplete()
             printTUI()
+
             if gUser == "":
                 getUser()
+
             else:
                 done = getInput()
+
         except FileNotFoundError:
             print('No tasks found for this user.')
+
             with open(gUser + ".txt", "w"):
                 pass
+
         except IndexError:
             print('Invalid task number')
+
         except Exception as e:
             global usage_msg
             print(e, '\n', '\n\n', usage_msg)
@@ -72,41 +80,61 @@ Options:
 6. [bright_blue]P[/bright_blue]revious page
 7. [bright_blue]Q[/bright_blue]uit
 
-Type [bright_blue]?[/bright_blue] or [bright_blue]help[/bright_blue] to display help''', title=f'[green]si[blue]ta[red]tra', subtitle=f'{randElliotQuote()}'))
+Type [bright_blue]?[/bright_blue] or [bright_blue]help[/bright_blue] to display help''', 
+title=f'[bright_green]si[bright_blue]ta[bright_red]tra',
+subtitle=f'[green]"{randElliotQuote()}"'))
 
 def getUser():
     global gUser
+
     while gUser == "":
         gUser = input('\nEnter your username: ')
+        isValid = gUser.find(';')
+
         if gUser == "":
             print("Invalid username")
+
+        elif isValid != -1:
+            print("Invalid username. Do not use ; in your username")
+            gUser = ""
+
         else:
             gUser = gUser.lower()
 
 def getInput():
     global usage_msg
     check = input(f'\nEnter an option: ')
+
     match check.lower():
+
         case '1' | 'a' | 'add':
             doAdd()
+
         case '2' | 't' | 'toggle':
             toggleTask()
+
         case '3' | 'r' | 'rm' | 'remove':
             promptRemove()
+
         case '4' | 'change' | 'user' | 'c':
             global gUser
             gUser = ""
             getUser()
+
         case '5' | 'n' | 'next':
             turnPage('n')
+
         case '6' | 'p' | 'previous':
             turnPage('p')
+
         case '7' | 'q' | 'quit':
             return True
+
         case '?' | 'help':
             clearScreen()
             print(Panel(usage_msg))
             input('Press any key to continue...')
+
         case _:
             print('Invalid selection, please try again')
 
@@ -114,6 +142,7 @@ def getList():
     currentList = "\n"
     global currentPage
     global taskPerPage
+
     if gUser != "":
         taskList = readList()
         firstTask = currentPage * taskPerPage
@@ -195,8 +224,22 @@ def writeTask(taskList):
         file.writelines(taskList)
 
 def doAdd():
+    isValid = False
+
+    while not isValid:
+
+        newTask = input("Input a new task: ")
+
+        if newTask.find(';') != -1:
+            isValid = False
+            print('Invalid task. Do not use [bright_red];[/bright_red] in your task')
+        else:
+            isValid = True
+
+    newTask += ";0\n"
+
     with open(gUser + ".txt", "a") as file:
-        file.write(input("Input a new task: ") + ";0\n")
+        file.write(newTask)
 
 def promptRemove():
     selRem = int(input('Enter the number for a task to remove: ')) - 1
