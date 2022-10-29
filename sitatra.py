@@ -121,7 +121,7 @@ def getList():
         if (currentPage + 1) * taskPerPage < len(taskList):
             lastTask = (currentPage + 1) * taskPerPage
         else:
-            lastTask = len(taskList) - 1
+            lastTask = len(taskList)
         for i in range(firstTask, lastTask):
             try:
                 tmp = taskList[i].split(';')
