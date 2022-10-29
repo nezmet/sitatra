@@ -159,7 +159,10 @@ def turnPage(direction):
             case "n":
                 currentPage += 1
             case "p":
-                currentPage -= 1
+                if currentPage == 0:
+                    pass
+                else:
+                    currentPage -= 1
 
 def toggleTask():
     global gUser
